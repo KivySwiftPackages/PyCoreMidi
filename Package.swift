@@ -4,9 +4,9 @@
 import PackageDescription
 
 
-let kivy = false
+let kivy = true
 let use_psk = true
-let local = true
+let local = false
 
 let pykit_package: Package.Dependency = if kivy {
     if use_psk {
@@ -43,9 +43,9 @@ let package = Package(
     ],
     dependencies: [
         pykit_package,
-        .package(url: "https://github.com/PythonSwiftLink/SwiftonizePlugin", .upToNextMajor(from: .init(0, 1, 0))),
+        //.package(url: "https://github.com/PythonSwiftLink/SwiftonizePlugin", .upToNextMajor(from: .init(0, 1, 0))),
         // add other packages for the py wrapper to utilize
-        .package(url: "https://github.com/AudioKit/AudioKit", .upToNextMajor(from: "5.6.5")),
+        .package(url: "https://github.com/AudioKit/AudioKit", .upToNextMajor(from: "5.6.5"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -54,10 +54,9 @@ let package = Package(
             name: "PyCoreMidi",
             dependencies: [
                 pykit,
-                .product(name: "AudioKit", package: "AudioKit")
-            ],
+                .product(name: "AudioKit", package: "AudioKit")            ],
             plugins: [
-                .plugin(name: "Swiftonize", package: "SwiftonizePlugin"),
+                //.plugin(name: "Swiftonize", package: "SwiftonizePlugin"),
             ]
             
         ),
