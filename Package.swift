@@ -4,29 +4,19 @@
 import PackageDescription
 
 
-let kivy = true
-let use_psk = true
 let local = false
 
-let pykit_package: Package.Dependency = if kivy {
-    if use_psk {
-        .package(url: "https://github.com/KivySwiftLink/PySwiftKit", from: .init(311, 0, 0))
-    } else {
-        .package(url: "https://github.com/KivySwiftLink/PythonSwiftLink", from: .init(311, 0, 0))
-    }
+let pykit_package: Package.Dependency = if local {
+    
+    .package(path: "../PySwiftKit")
+    
 } else {
-    if local {
-        .package(path: "/Users/codebuilder/Documents/GitHub/PySwiftKit")
-    } else {
-        .package(url: "https://github.com/PythonSwiftLink/PySwiftKit", from: .init(311, 0, 0))
-    }
+    
+        .package(url: "https://github.com/kv-swift/PySwiftKit", from: .init(311, 0, 0))
+    
 }
 
-let pykit: Target.Dependency = if use_psk {
-    .product(name: "SwiftonizeModules", package: "PySwiftKit")
-} else {
-    .product(name: "SwiftonizeModules", package: "PythonSwiftLink")
-}
+let pykit: Target.Dependency = .product(name: "SwiftonizeModules", package: "PySwiftKit")
 
 
 let package = Package(
@@ -43,7 +33,6 @@ let package = Package(
     ],
     dependencies: [
         pykit_package,
-        //.package(url: "https://github.com/PythonSwiftLink/SwiftonizePlugin", .upToNextMajor(from: .init(0, 1, 0))),
         // add other packages for the py wrapper to utilize
         .package(url: "https://github.com/AudioKit/AudioKit", .upToNextMajor(from: "5.6.5"))
     ],
@@ -54,9 +43,7 @@ let package = Package(
             name: "PyCoreMidi",
             dependencies: [
                 pykit,
-                .product(name: "AudioKit", package: "AudioKit")            ],
-            plugins: [
-                //.plugin(name: "Swiftonize", package: "SwiftonizePlugin"),
+                .product(name: "AudioKit", package: "AudioKit")
             ]
             
         ),
